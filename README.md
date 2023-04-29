@@ -6,14 +6,14 @@
 `npm install`
 
 - Updating the environment variables
-SERVICE_URL = 'http://localhost:3000/api' # for API Swagger Docs
-SERVICE_SECRET = '2db73505a5846dca5abba265f80ca99682cdc64d5fc278afa8e41164f2f3b9b6' # for JWT secret key
-PORT_LISTENER = 3000
-HOST_LISTENER = '0.0.0.0'
-DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_NAME = 'bookstore_db'
-DB_PASSWORD = 'P@$$w0rd'
+`SERVICE_URL = 'http://localhost:3000/api' # for API Swagger Docs`
+`SERVICE_SECRET = '2db73505a5846dca5abba265f80ca99682cdc64d5fc278afa8e41164f2f3b9b6' # for JWT secret key`
+`PORT_LISTENER = 3000`
+`HOST_LISTENER = '0.0.0.0'`
+`DB_HOST = 'localhost'`
+`DB_USER = 'root'`
+`DB_NAME = 'bookstore_db'`
+`DB_PASSWORD = 'P@$$w0rd'`
 
 - Setup Database
 You can setup the database and tables by running this code in the terminal:
