@@ -4,7 +4,8 @@
   "description": "bookstore api",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "testv": "jest --verbose",
     "setup_db": "node migration.js setup_db",
     "remove_db": "node migration.js remove_db"
   },
@@ -36,5 +37,9 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }

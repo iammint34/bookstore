@@ -1,7 +1,7 @@
 class BaseController {
 
     tokenResponse(response, token, message = "User authenticated successfully!") {
-        const statusCode = 200
+        const statusCode = 201
 
         this.apiResponse(response, statusCode, { tokenType: `Bearer`, accessToken: token }, message)
     }
