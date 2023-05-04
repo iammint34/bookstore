@@ -2,38 +2,33 @@ const { Router: ExpressRouter } = require('express')
 const { isArray } = require('lodash')
 const ExpressValidatorMiddleware = require('@middlewares/validator-result')
 
-class Router {
-    constructor(basePath, Controller) {
-        this._router = ExpressRouter()
-        this._basePath = '/api/' + basePath
-        this._controller = new Controller()
-    }
+const createRouter = (basePath, controller) => {
+  const router = ExpressRouter()
+  basePath = '/api/' + basePath
 
-    get routes() {
-        return this._router
-    }
+  const middlewares = middleware => {
+    isArray(middleware)
+      ? middleware.forEach(m => router.use(basePath, m))
+      : router.use(basePath, middleware)
 
-    middlewares(middleware) {
-        if (isArray(middleware)) {
-            middleware.forEach(m => { this._router.use(this._basePath, m) })
-        } else {
-            this._router.use(this._basePath, middleware)
-        }
+    return { middlewares }
+  }
 
-        return this
-    }
+  const register = (method, path, controllerMethod, middlewares = []) => {
+    const routerPath = basePath + path
+    const controllerFn = controller[controllerMethod].bind(controller)
+    const middlewareList = isArray(middlewares) ? middlewares : [middlewares]
 
-    register(method, path, controllerMethod, middlewares = []) {
-        const routerPath = this._basePath + path
-        const controller = this._controller[controllerMethod].bind(this._controller)
+    router[method](routerPath, [
+      ...middlewareList,
+      ExpressValidatorMiddleware,
+      controllerFn,
+    ])
 
-        if (!isArray(middlewares)) {
-            middlewares = [middlewares]
-        }
+    return { routes: router, middlewares }
+  }
 
-        this._router[method](routerPath, [...middlewares, ExpressValidatorMiddleware, controller])
-        return this
-    }
+  return { routes: router, middlewares, register }
 }
 
-module.exports = Router
+module.exports = createRouter

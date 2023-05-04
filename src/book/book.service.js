@@ -45,6 +45,7 @@ class BookService extends CoreModel {
 
     static async create(authUser = {}, payload = {}) {
 
+        console.log(payload);
         payload.uuid = uuidV4();
 
         // binds authenticated user to the book

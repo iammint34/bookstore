@@ -4,10 +4,8 @@ const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerSpecs = swaggerJSDoc(require('@config/documentation'))
 const swaggerUiAssetPath = swaggerUiDist.getAbsoluteFSPath()
 
-class DocumentationController extends BaseController {
-
-    handleGenerateHtml(request, response) {
-        response.send(`
+const handleGenerateHtml = (request, response) => {
+    response.send(`
             <!DOCTYPE html>
             <html lang="en">
             
@@ -46,24 +44,24 @@ class DocumentationController extends BaseController {
             </body>
             </html>
         `)
+}
+
+const handleServeFiles = (request, response) => {
+    const file = request.params.file
+
+    if (file == 'swagger-ui-init.js') {
+        const initOptions = { swaggerDoc: swaggerSpecs }
+        const scriptString = getInitFunction().replace('<% swaggerOptions %>', `var options = ` + JSON.stringify(initOptions))
+
+        response.set('Content-Type', 'application/javascript')
+        response.send(scriptString)
+    } else {
+        response.sendFile(swaggerUiAssetPath + '/' + file)
     }
+}
 
-    handleServeFiles(request, response) {
-        const file = request.params.file
-
-        if (file == 'swagger-ui-init.js') {
-            const initOptions = { swaggerDoc: swaggerSpecs }
-            const scriptString = this.getInitFunction().replace('<% swaggerOptions %>', `var options = ` + JSON.stringify(initOptions))
-
-            response.set('Content-Type', 'application/javascript')
-            response.send(scriptString)
-        } else {
-            response.sendFile(swaggerUiAssetPath + '/' + file)
-        }
-    }
-
-    getInitFunction() {
-        return `window.onload = function() {
+const getInitFunction = () => {
+    return `window.onload = function() {
             var url = window.location.search.match(/url=([^&]+)/);
             if (url && url.length > 1) {
             url = decodeURIComponent(url[1]);
@@ -95,7 +93,12 @@ class DocumentationController extends BaseController {
             
             window.ui = ui
         }`
-    }
 }
 
-module.exports = DocumentationController
+
+
+module.exports = {
+    handleGenerateHtml,
+    handleServeFiles,
+    getInitFunction,
+}
