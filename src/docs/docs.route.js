@@ -1,10 +1,9 @@
-const Router = require('@core/router')
+const createRouter = require('@core/router');
 const DocumentationController = require('./docs.controller')
-const ROUTER = new Router('docs', DocumentationController)
 
-ROUTER
-    .register('get', '/', 'handleGenerateHtml')
-    .register('get', '/:file', 'handleServeFiles')
-    .register('get', '/static/:file', 'handleServeFiles')
+const router = createRouter('docs', DocumentationController);
+router.register('get', '/', 'handleGenerateHtml');
+router.register('get', '/:file', 'handleServeFiles');
+router.register('get', '/static/:file', 'handleServeFiles');
 
-module.exports = ROUTER.routes
+module.exports = router.routes
